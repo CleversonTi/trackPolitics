@@ -34,7 +34,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: deputados
       MYSQL_USER: deputado
-      MYSQL_PASSWORD: orcamento
+      MYSQL_PASSWORD: retta
     ports:
       - "3307:3306"
     volumes:
