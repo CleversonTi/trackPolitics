@@ -1,0 +1,50 @@
+
+
+services:
+  jobs_retta:
+    build:
+      context: ./backend
+    container_name: jobs_RETTA
+    user: "${UID}:${GID}"
+    volumes:
+      - ./backend:/var/www
+    depends_on:
+      - db_retta
+    networks:
+      - app-network
+
+  react_retta:
+    build:
+      context: ./frontend
+    container_name: react_RETTA
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    networks:
+      - app-network
+
+  db_retta:
+    image: mysql:8.0
+    container_name: db_RETTA
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: deputados
+      MYSQL_USER: deputado
+      MYSQL_PASSWORD: orcamento
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  dbdata:
+
+networks:
+  app-network:
+    driver: bridge
