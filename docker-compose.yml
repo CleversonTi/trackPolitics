@@ -1,5 +1,5 @@
 
-
+#docker-compose.yml
 services:
   jobs_retta:
     build:
@@ -8,6 +8,9 @@ services:
     user: "${UID}:${GID}"
     volumes:
       - ./backend:/var/www
+
+    ports:
+      - "8000:8000" 
     depends_on:
       - db_retta
     networks:
