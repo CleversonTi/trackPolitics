@@ -4,8 +4,14 @@ export type Deputado = {
   nome: string;
   sigla_partido: string;
   sigla_uf: string;
-  url_foto: string; 
-  status: string; 
+  url_foto: string;
+  status: string;
+};
+
+export type Despesa = {
+  tipoDespesa: string;
+  dataDocumento: string;
+  valorDocumento: number;
 };
 
 export type ApiResponse = {
