@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import api from '@/services/api';
 
 type Despesa = {
-  tipoDespesa: string;
-  dataDocumento: string;
-  valorDocumento: number;
+  tipo_despesa: string;
+  data_documento: string;
+  valor_documento: number;
 };
 
 type Deputado = {
@@ -45,34 +45,44 @@ export default function useDeputadoDetalhe() {
     carregarDeputado();
   }, [id]);
 
-  useEffect(() => {
-    const carregarDespesas = async () => {
-      setLoading(true);
-      try {
-        const res = await api.get(`/deputados/${id}/despesas`, {
-          params: { pagina },
-        });
-        setDespesas(res.data.dados || []);
-        setTotalPaginas(res.data.links?.last?.page || 1);
-      } catch (err) {
-        console.error('Erro ao carregar despesas:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    useEffect(() => {
+  const carregarDespesas = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get(`/deputados/${id}/despesas`, {
+        params: { pagina },
+      });
 
-    carregarDespesas();
-  }, [id, pagina]);
+      const resposta = res.data;
+      console.log('Resposta despesas:', resposta);
+
+      if (Array.isArray(resposta.dados)) {
+        setDespesas(resposta.dados);
+        setTotalPaginas(resposta.links?.last?.page || 1);
+      } else {
+        console.warn('❌ Esperava array em resposta.dados, recebeu:', resposta);
+        setDespesas([]);
+      }
+    } catch (err) {
+      console.error('Erro ao carregar despesas:', err);
+      setDespesas([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  carregarDespesas();
+}, [id, pagina]);
 
   const despesasFiltradas = despesas.filter((d) => {
-    const tipoMatch = filtros.tipo ? d.tipoDespesa.includes(filtros.tipo) : true;
-    const data = new Date(d.dataDocumento);
+    const tipoMatch = filtros.tipo ? d.tipo_despesa.includes(filtros.tipo) : true;
+    const data = new Date(d.data_documento);
     const inicio = filtros.dataInicio ? new Date(filtros.dataInicio) : null;
     const fim = filtros.dataFim ? new Date(filtros.dataFim) : null;
     const dataMatch = (!inicio || data >= inicio) && (!fim || data <= fim);
     const valorMatch =
-      (!filtros.valorMin || d.valorDocumento >= parseFloat(filtros.valorMin)) &&
-      (!filtros.valorMax || d.valorDocumento <= parseFloat(filtros.valorMax));
+      (!filtros.valorMin || d.valor_documento >= parseFloat(filtros.valorMin)) &&
+      (!filtros.valorMax || d.valor_documento <= parseFloat(filtros.valorMax));
     return tipoMatch && dataMatch && valorMatch;
   });
 

@@ -1,3 +1,4 @@
+
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
@@ -49,4 +50,20 @@
   text-align: center;
   padding: 1rem;
   color: #777;
+}
+.tfootTotal {
+  background-color: #f0fdfa;
+  font-weight: bold;
+  color: #1a202c;
+  font-size: 1rem;
+
+  td {
+    padding: 0.75rem 1rem;
+    border-top: 2px solid #38b2ac;
+  }
+
+  td:last-child {
+    color: #2c7a7b;
+    font-size: 1.1rem;
+  }
 }

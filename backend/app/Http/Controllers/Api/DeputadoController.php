@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Deputado;
+use App\Jobs\ImportarDespesasDeputado;
+use App\Models\Despesa;
 
 class DeputadoController extends Controller
 {
@@ -43,6 +45,30 @@ class DeputadoController extends Controller
         $deputado = Deputado::findOrFail($id);
         $deputado->update($request->all());
         return response()->json($deputado);
+    }
+   public function despesas($id)
+    {
+        $deputado = Deputado::findOrFail($id);
+        $idCamara = $deputado->id_camara;
+
+        // Só importa se não tiver no banco
+        $existe = Despesa::where('deputado_id', $idCamara)->exists();
+        if (!$existe) {
+            ImportarDespesasDeputado::dispatchSync($idCamara);
+        }
+
+        // Paginação: pega ?pagina=X na query
+        $porPagina = 10;
+        $despesas = Despesa::where('deputado_id', $idCamara)
+            ->orderBy('data_documento', 'desc')
+            ->paginate($porPagina);
+
+        return response()->json([
+            'dados' => $despesas->items(),
+            'links' => [
+                'last' => ['page' => $despesas->lastPage()],
+            ],
+        ]);
     }
 
     public function destroy($id)

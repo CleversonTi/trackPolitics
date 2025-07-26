@@ -1,3 +1,4 @@
+//frontend/src/components/pages/DeputadoDetalhe/index.tsx
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import FiltrosDespesas from '@/components/Despesas/FiltrosDespesas';
@@ -10,6 +11,7 @@ import styles from './DeputadoDetalhe.module.scss';
 
 export default function DeputadoDetalhe() {
   const { id } = useParams();
+  console.log('Deputado ID:', id);
   const navigate = useNavigate();
 
   const {
@@ -45,8 +47,11 @@ export default function DeputadoDetalhe() {
 
       <h3>Despesas</h3>
       {loading ? (
-        <p>Carregando despesas...</p>
-      ) : (
+        <div className={styles.loading}>
+            <div className={styles.spinner}></div>
+            <p>Carregando despesas...</p>
+        </div>
+        ) : (
         <>
           <TabelaDespesas despesas={despesasFiltradas} />
           <Pagination

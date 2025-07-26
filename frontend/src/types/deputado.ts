@@ -8,11 +8,7 @@ export type Deputado = {
   status: string;
 };
 
-export type Despesa = {
-  tipoDespesa: string;
-  dataDocumento: string;
-  valorDocumento: number;
-};
+
 
 export type ApiResponse = {
   data: Deputado[];
