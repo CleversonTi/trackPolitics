@@ -1,39 +1,45 @@
-//frontend/src/hooks/useDeputados.ts
+// frontend/src/hooks/useDeputados.ts
 import { useState, useEffect, useMemo } from 'react';
 import api from '../services/api';
 import { Deputado, ApiResponse } from '../types/deputado';
+import { debounce } from 'lodash';
 
 export default function useDeputados() {
   const [deputados, setDeputados] = useState<Deputado[]>([]);
   const [pagina, setPagina] = useState(1);
   const [busca, setBusca] = useState('');
+  const [buscaDebounced, setBuscaDebounced] = useState('');
   const [filtros, setFiltros] = useState({ partido: '', uf: '' });
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const handler = debounce(() => {
+      setBuscaDebounced(busca);
+    }, 400);
+
+    handler();
+    return () => handler.cancel();
+  }, [busca]);
+
+  useEffect(() => {
     const abortController = new AbortController();
-    
+
     const carregarDeputados = async () => {
       setLoading(true);
       setError(null);
-      
       try {
         const response = await api.get<ApiResponse>('/deputados', {
-          params: { 
-            page: pagina, 
-            busca: busca.trim() || undefined 
+          params: {
+            page: pagina,
+            busca: buscaDebounced.trim() || undefined,
           },
-          signal: abortController.signal
+          signal: abortController.signal,
         });
 
-        if (!response.data || !Array.isArray(response.data.data)) {
-          throw new Error('Estrutura de dados inválida da API');
-        }
-
-        setDeputados(response.data.data);
-        setTotalPaginas(response.data.last_page);
+        setDeputados(response.data.data || []);
+        setTotalPaginas(response.data.last_page || 1);
       } catch (err) {
         if (!abortController.signal.aborted) {
           const errorMsg = err instanceof Error ? err.message : 'Erro desconhecido';
@@ -50,18 +56,18 @@ export default function useDeputados() {
     carregarDeputados();
 
     return () => abortController.abort();
-  }, [pagina, busca]);
+  }, [pagina, buscaDebounced]);
 
   const partidos = useMemo(() => {
-    return [...new Set(deputados.map(dep => dep.sigla_partido))].sort();
+    return [...new Set(deputados.map((dep) => dep.sigla_partido))].sort();
   }, [deputados]);
 
   const ufs = useMemo(() => {
-    return [...new Set(deputados.map(dep => dep.sigla_uf))].sort();
+    return [...new Set(deputados.map((dep) => dep.sigla_uf))].sort();
   }, [deputados]);
 
   const deputadosFiltrados = useMemo(() => {
-    return deputados.filter(dep => {
+    return deputados.filter((dep) => {
       const filtroPartido = filtros.partido ? dep.sigla_partido === filtros.partido : true;
       const filtroUf = filtros.uf ? dep.sigla_uf === filtros.uf : true;
       return filtroPartido && filtroUf;
@@ -80,6 +86,6 @@ export default function useDeputados() {
     filtros,
     setFiltros,
     partidos,
-    ufs
+    ufs,
   };
 }

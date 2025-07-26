@@ -1,3 +1,4 @@
+// frontend/src/components/ui/SearchInput/SearchInput.tsx
 import React from 'react';
 import styles from '@/components/styles/SearchInput/SearchInput.module.scss';
 
@@ -8,22 +9,25 @@ type SearchInputProps = {
   disabled?: boolean;
 };
 
-export default function SearchInput({
+const SearchInput: React.FC<SearchInputProps> = ({
   value,
   onChange,
-  placeholder = 'Buscar...',
+  placeholder = 'Buscar por nome...',
   disabled = false
-}: SearchInputProps) {
+}) => {
   return (
-
-     <div className={styles.inputContainer}>
-      <label className={styles.label}>Nome</label>
-    <input
+    <div className={styles.inputContainer}>
+      <label htmlFor="searchInput" className={styles.label}>
+        Nome
+      </label>
+      <input
+      id="busca"
       type="text"
-      placeholder={placeholder}
       value={value}
       onChange={onChange}
+      placeholder={placeholder}
       disabled={disabled}
+      autoComplete="off"
       style={{ 
         padding: '10px',
         width: '100%',
@@ -34,4 +38,6 @@ export default function SearchInput({
     />
     </div>
   );
-}
+};
+
+export default React.memo(SearchInput);
