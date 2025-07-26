@@ -1,0 +1,52 @@
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+  font-size: 0.95rem;
+
+  thead {
+    background-color: #f2f2f2;
+
+    th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: #333;
+      border-bottom: 1px solid #ccc;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid #eee;
+
+      &:hover {
+        background-color: #f9f9f9;
+      }
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      color: #444;
+    }
+  }
+}
+
+.valor {
+  font-weight: bold;
+  color: #2c7a7b;
+}
+
+.semResultados {
+  text-align: center;
+  padding: 1rem;
+  color: #777;
+}

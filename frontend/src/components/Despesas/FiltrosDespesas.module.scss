@@ -1,0 +1,31 @@
+.filtrosWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.filtroItem {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    color: #444;
+    font-weight: 500;
+  }
+
+  input,
+  select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+  }
+}

@@ -1,5 +1,6 @@
 //frontend/src/components/CardDeputado/index.tsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Deputado } from '@/types/deputado';
 import styles from './CardDeputado.module.scss';
 
@@ -24,6 +25,9 @@ export default function DeputadoCard({ deputado }: DeputadoCardProps) {
 
         
       </div>
+      <Link to={`/deputados/${deputado.id}`} className={styles.button}>
+        Ver despesas
+      </Link>
     </li>
   );
 }
