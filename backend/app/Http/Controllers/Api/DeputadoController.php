@@ -31,7 +31,8 @@ class DeputadoController extends Controller
 
     public function show($id)
     {
-        return response()->json(Deputado::findOrFail($id));
+        $deputado = Deputado::findOrFail($id);
+        return response()->json($deputado);
     }
 
     public function store(Request $request)

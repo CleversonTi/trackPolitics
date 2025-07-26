@@ -54,8 +54,7 @@ export default function useDeputadoDetalhe() {
       });
 
       const resposta = res.data;
-      console.log('Resposta despesas:', resposta);
-
+     
       if (Array.isArray(resposta.dados)) {
         setDespesas(resposta.dados);
         setTotalPaginas(resposta.links?.last?.page || 1);

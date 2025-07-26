@@ -29,6 +29,7 @@ class ImportarDeputados extends Command
                         'sigla_uf' => $d['siglaUf'],
                         'url_foto' => $d['urlFoto'],
                         'email' => $d['email'] ?? null,
+                        'status' => 'Ativo',
                     ]
                 );
             }

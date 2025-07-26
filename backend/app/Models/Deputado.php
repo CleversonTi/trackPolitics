@@ -13,5 +13,6 @@ class Deputado extends Model
         'sigla_uf',
         'url_foto',
         'email',
+        'status' ,
     ];
 }

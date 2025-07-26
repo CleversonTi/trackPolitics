@@ -11,7 +11,6 @@ import styles from './DeputadoDetalhe.module.scss';
 
 export default function DeputadoDetalhe() {
   const { id } = useParams();
-  console.log('Deputado ID:', id);
   const navigate = useNavigate();
 
   const {
