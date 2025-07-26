@@ -1,0 +1,28 @@
+@import '../../styles/variables';
+.button {
+  padding: 0.6em 1.2em;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.primary {
+  background-color: #007bff;
+  color: white;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+.secondary {
+  background-color: #f0f0f0;
+  color: #333;
+
+  &:hover {
+    background-color: #ddd;
+  }
+}

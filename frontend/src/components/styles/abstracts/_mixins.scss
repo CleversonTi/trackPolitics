@@ -1,0 +1,13 @@
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin box-shadow {
+  box-shadow: $box-shadow-base;
+}
+
+@mixin responsive-font($min, $max) {
+  font-size: clamp(#{$min}, 2vw, #{$max});
+}

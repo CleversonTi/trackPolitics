@@ -1,0 +1,39 @@
+//frontend/src/components/styles/base/_globals.scss
+body {
+  background-color: $color-light;
+  color: $text-color-dark;
+  line-height: 1.6;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: color 0.3s;
+
+  &:hover {
+    color: $color-primary-hover;
+  }
+}
+
+button {
+  font-family: inherit;
+  font-size: $font-size-base;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius;
+  border: none;
+  background-color: $color-primary;
+  color: $color-light;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $color-primary-hover;
+  }
+}
+
+.container-global {
+  padding: 2rem;
+  background: red;
+}
