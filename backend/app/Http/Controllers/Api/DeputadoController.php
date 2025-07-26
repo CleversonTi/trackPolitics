@@ -1,5 +1,5 @@
 <?php
-
+//backend/app/Http/Controllers/Api/DeputadoController.php
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -8,10 +8,24 @@ use App\Models\Deputado;
 
 class DeputadoController extends Controller
 {
-    public function index()
-    {
-        return response()->json(Deputado::all());
+   public function index(Request $request)
+{
+    $query = Deputado::query();
+
+    if ($request->filled('busca')) {
+        $query->where('nome', 'like', '%' . $request->busca . '%');
     }
+
+    $paginado = $query->paginate(10);
+
+    return response()->json([
+        'data' => $paginado->items(),
+        'current_page' => $paginado->currentPage(),
+        'last_page' => $paginado->lastPage(),
+        'total' => $paginado->total(),
+    ]);
+}
+
 
     public function show($id)
     {
