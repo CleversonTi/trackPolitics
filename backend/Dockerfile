@@ -11,6 +11,11 @@ RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Define o diretório de trabalho
 WORKDIR /var/www
 
+# Copia os arquivos da aplicação para o container
+COPY . .
+
+# Comando de inicialização
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
