@@ -1,5 +1,5 @@
 <?php
-//backend/app/Http/Controllers/Api/DeputadoController.php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -52,13 +52,11 @@ class DeputadoController extends Controller
         $deputado = Deputado::findOrFail($id);
         $idCamara = $deputado->id_camara;
 
-        // Só importa se não tiver no banco
         $existe = Despesa::where('deputado_id', $idCamara)->exists();
         if (!$existe) {
             ImportarDespesasDeputado::dispatchSync($idCamara);
         }
 
-        // Paginação: pega ?pagina=X na query
         $porPagina = 10;
         $despesas = Despesa::where('deputado_id', $idCamara)
             ->orderBy('data_documento', 'desc')

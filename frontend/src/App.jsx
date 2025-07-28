@@ -13,16 +13,18 @@ import NotFound from '@/pages/NotFound';
 function App() {
   return (
     <>
+    <div className="content_principal">
+      
       <Header />
-      <div className="app">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/deputados" element={<Deputados />} />
           <Route path="/deputados/:id" element={<DeputadoDetalhe />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </div>
       <Footer />
+     
+      </div>
     </>
   );
 }
