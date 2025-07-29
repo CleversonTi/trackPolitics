@@ -3,7 +3,7 @@ name: CI/CD RETTA App
 on:
   push:
     branches:
-      - main # ou "master", se você estiver usando esse nome
+      - main  # ou "master", se for o nome principal do seu repositório
 
 jobs:
   build-and-deploy:
@@ -13,9 +13,12 @@ jobs:
       - name: 🔄 Clonar repositório
         uses: actions/checkout@v3
 
-      - name: 🐳 Configurar Docker Compose
+      - name: 🐳 Subir containers com Docker Compose
         run: |
-          docker-compose -f docker-compose.yml up -d --build
+          docker compose -f docker-compose.yml up -d --build
+
+      - name: ⏱️ Aguardar containers subirem
+        run: sleep 10  # opcional, mas ajuda a evitar erro de "container not ready"
 
       - name: 📦 Instalar dependências do Laravel
         run: |
@@ -26,8 +29,8 @@ jobs:
       - name: ✅ Verificar serviços
         run: docker ps
 
-      - name: 🧪 Testes backend (Laravel)
+      - name: 🧪 Testar aplicação Laravel
         run: docker exec jobs_RETTA php artisan test
 
-      - name: 🚀 Deploy finalizado com sucesso
-        run: echo "Deploy concluído com sucesso!"
+      - name: 🚀 Finalizar deploy
+        run: echo "✅ Deploy concluído com sucesso!"
