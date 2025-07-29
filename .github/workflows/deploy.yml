@@ -3,7 +3,7 @@ name: CI/CD RETTA App
 on:
   push:
     branches:
-      - main  # ou "master", se for o nome principal do seu repositório
+      - main 
 
 jobs:
   build-and-deploy:
@@ -14,23 +14,25 @@ jobs:
         uses: actions/checkout@v3
 
       - name: 🐳 Subir containers com Docker Compose
-        run: |
-          docker compose -f docker-compose.yml up -d --build
+        run: docker compose -f docker-compose.yml up -d --build
 
       - name: ⏱️ Aguardar containers subirem
-        run: sleep 10  # opcional, mas ajuda a evitar erro de "container not ready"
+        run: sleep 10
 
-      - name: 📦 Instalar dependências do Laravel
+      - name: 📜 Verificar logs iniciais do Laravel
+        run: docker compose logs jobs_retta
+
+      - name: 📦 Instalar dependências Laravel
         run: |
-          docker exec jobs_RETTA composer install
-          docker exec jobs_RETTA php artisan key:generate
-          docker exec jobs_RETTA php artisan migrate --force
+          docker compose exec --workdir /var/www jobs_retta composer install --no-interaction --prefer-dist
+          docker compose exec --workdir /var/www jobs_retta php artisan key:generate
+          docker compose exec --workdir /var/www jobs_retta php artisan migrate --force
 
-      - name: ✅ Verificar serviços
-        run: docker ps
+      - name: ✅ Verificar containers em execução
+        run: docker compose ps
 
-      - name: 🧪 Testar aplicação Laravel
-        run: docker exec jobs_RETTA php artisan test
+      - name: 🧪 Executar testes Laravel
+        run: docker compose exec --workdir /var/www jobs_retta php artisan test
 
       - name: 🚀 Finalizar deploy
         run: echo "✅ Deploy concluído com sucesso!"
