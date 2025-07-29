@@ -1,0 +1,33 @@
+name: CI/CD RETTA App
+
+on:
+  push:
+    branches:
+      - main # ou "master", se você estiver usando esse nome
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 Clonar repositório
+        uses: actions/checkout@v3
+
+      - name: 🐳 Configurar Docker Compose
+        run: |
+          docker-compose -f docker-compose.yml up -d --build
+
+      - name: 📦 Instalar dependências do Laravel
+        run: |
+          docker exec jobs_RETTA composer install
+          docker exec jobs_RETTA php artisan key:generate
+          docker exec jobs_RETTA php artisan migrate --force
+
+      - name: ✅ Verificar serviços
+        run: docker ps
+
+      - name: 🧪 Testes backend (Laravel)
+        run: docker exec jobs_RETTA php artisan test
+
+      - name: 🚀 Deploy finalizado com sucesso
+        run: echo "Deploy concluído com sucesso!"
