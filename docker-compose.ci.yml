@@ -1,0 +1,4 @@
+services:
+  jobs_retta:
+    user: root
+    command: tail -f /dev/null
