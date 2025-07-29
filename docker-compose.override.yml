@@ -1,0 +1,5 @@
+version: '3.8'
+
+services:
+  jobs_retta:
+    user: root  # sobrescreve o user e evita erro de permissão no GitHub Actions
