@@ -25,8 +25,15 @@ jobs:
       - name: 📦 Instalar dependências Laravel
         run: |
           docker compose exec --workdir /var/www jobs_retta composer install --no-interaction --prefer-dist
-          docker compose exec --workdir /var/www jobs_retta php artisan key:generate
-          docker compose exec --workdir /var/www jobs_retta php artisan migrate --force
+
+      - name: 📝 Copiar .env padrão
+        run: docker compose exec --workdir /var/www jobs_retta cp .env.example .env
+
+      - name: 🔐 Gerar APP_KEY
+        run: docker compose exec --workdir /var/www jobs_retta php artisan key:generate
+
+      - name: 🗄️ Rodar migrations
+        run: docker compose exec --workdir /var/www jobs_retta php artisan migrate --force
 
       - name: ✅ Verificar containers em execução
         run: docker compose ps
